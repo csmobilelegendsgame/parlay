@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Bola Simple - Full HDP O/U</title>
+<style>
+*{box-sizing:border-box;font-family:Consolas,monospace}
+body{background:#0a0a0a;color:#fff;padding:14px;max-width:520px;margin:auto}
+h1{text-align:center;font-size:15px;border:1px solid #00ff88;color:#00ff88;padding:10px;border-radius:8px}
+.card{background:#151515;border:1px solid #333;padding:14px;border-radius:10px;margin-top:14px}
+label{font-size:11px;color:#888;margin:14px 0 6px;display:block}
+input{width:100%;background:#000;border:1px solid #444;color:#fff;padding:12px;border-radius:8px}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.chip{padding:7px 10px;border:1px solid #333;background:#0f0f0f;border-radius:18px;font-size:11px;cursor:pointer}
+.chip.active{background:#00ff88;color:#000;border-color:#00ff88;font-weight:800}
+.btn{width:100%;background:#00ff88;color:#000;border:none;padding:14px;border-radius:8px;font-weight:900;margin-top:16px;cursor:pointer}
+#out{white-space:pre-wrap;background:#fff;color:#000;padding:14px;border-radius:8px;font-size:12px;display:none;margin-top:14px;line-height:1.5}
+.tools{display:none;margin-top:8px}
+.tools button{width:100%;padding:11px;background:#222;color:#fff;border:1px solid #444;border-radius:6px}
+</style>
+</head>
+<body>
+<h1>⚽ PROMPT BOLA - HDP & O/U 0-5</h1>
+<div class="card">
+<label>MATCH (TIM A vs TIM B)</label>
+<input id="match" value="Newcastle vs Everton">
+<label>HDP - TAP BEBERAPA (0 SAMPAI 5)</label>
+<div class="chips" id="hdpChips"></div>
+<label>O/U - TAP BEBERAPA (0 SAMPAI 5)</label>
+<div class="chips" id="ouChips"></div>
+<button class="btn" onclick="gen()">GENERATE STRUK</button>
+</div>
+<div id="out"></div>
+<div class="tools" id="tools"><button onclick="copyT()">📋 SALIN STRUK</button></div>
+<script>
+const hdpValues=["-5","-4.5","-4","-3.5","-3","-2.75","-2.5","-2.25","-2","-1.75","-1.5","-1.25","-1","-0.75","-0.5","-0.25","0","+0.25","+0.5","+0.75","+1","+1.25","+1.5","+1.75","+2","+2.25","+2.5","+3","+3.5","+4","+5"];
+const ouValues=["0.5","1.0","1.5","1.75","2.0","2.25","2.5","2.75","3.0","3.25","3.5","3.75","4.0","4.25","4.5","4.75","5.0","5.5"];
+function buildChips(id,values){const c=document.getElementById(id);values.forEach(v=>{const d=document.createElement('div');d.className='chip';d.dataset.v=v;d.textContent=v;d.onclick=()=>d.classList.toggle('active');c.appendChild(d);});}
+buildChips('hdpChips',hdpValues);buildChips('ouChips',ouValues);
+function getActive(id){return [...document.querySelectorAll('#'+id+' .chip.active')].map(x=>x.dataset.v).join(', ')||'-';}
+function gen(){const m=document.getElementById('match').value||'Tim A vs Tim B';const hdp=getActive('hdpChips');const ou=getActive('ouChips');const txt=`MATCH: ${m}\nHDP: ${hdp}\nO/U: ${ou}\n\nAnalisa ${m}.\n\n1. Form 5 laga & H2H\n2. Prediksi skor + 1X2 %\n3. Rekomendasi ✓/✗:\n- 1X2\n- HDP: ${hdp}\n- O/U: ${ou}\n- BTTS\n4. Pick AMAN, VALUE, HINDARI\n5. Confidence %`;document.getElementById('out').style.display='block';document.getElementById('out').textContent=txt;document.getElementById('tools').style.display='block';}
+function copyT(){navigator.clipboard.writeText(document.getElementById('out').textContent).then(()=>alert('Disalin!'))}
+</script>
+</body>
+  </html>
